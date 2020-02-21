@@ -108,7 +108,7 @@ class DCGAN(object):
 
     def build_model(self):
         if self.y_dim:
-            self.y = tf.placeholder(tf.float32, [self.batch_size, self.y_dim], name='y')
+            self.y = tf.compat.v1.placeholder(tf.float32, [self.batch_size, self.y_dim], name='y')
         else:
             self.y = None
 
@@ -156,20 +156,20 @@ class DCGAN(object):
         self.g_loss_sum = scalar_summary("g_loss", self.g_loss)
         self.d_loss_sum = scalar_summary("d_loss", self.d_loss)
 
-        t_vars = tf.trainable_variables()
+        t_vars = tf.compat.v1.trainable_variables()
 
         self.d_vars = [var for var in t_vars if 'd_' in var.name]
         self.g_vars = [var for var in t_vars if 'g_' in var.name]
 
-        self.saver = tf.train.Saver(max_to_keep=self.max_to_keep)
+        self.saver = tf.compat.v1.train.Saver(max_to_keep=self.max_to_keep)
 
     def train(self, config):
-        d_optim = tf.train.AdamOptimizer(config.learning_rate, beta1=config.beta1) \
+        d_optim = tf.compat.v1.train.AdamOptimizer(config.learning_rate, beta1=config.beta1) \
             .minimize(self.d_loss, var_list=self.d_vars)
         g_optim = tf.train.AdamOptimizer(config.learning_rate, beta1=config.beta1) \
             .minimize(self.g_loss, var_list=self.g_vars)
         try:
-            tf.global_variables_initializer().run()
+            tf.tf.compat.v1.global_variables_initializer().run()
         except:
             tf.initialize_all_variables().run()
 

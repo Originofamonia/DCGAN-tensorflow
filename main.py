@@ -78,10 +78,10 @@ def main(_):
         json.dump(flags_dict, f, indent=4, sort_keys=True, ensure_ascii=False)
 
     # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
-    run_config = tf.ConfigProto()
+    run_config = tf.compat.v1.ConfigProto()
     run_config.gpu_options.allow_growth = True
 
-    with tf.Session(config=run_config) as sess:
+    with tf.compat.v1.Session(config=run_config) as sess:
         if FLAGS.dataset == 'mnist':
             dcgan = DCGAN(
                 sess,
@@ -150,4 +150,4 @@ def main(_):
 
 
 if __name__ == '__main__':
-    tf.app.run()
+    tf.compat.v1.app.run()
